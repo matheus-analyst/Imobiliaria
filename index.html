@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Imobiliária M | Encontre seu Lar</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="navbar">
+        <div class="container nav-container">
+            <div class="logo">Imobiliária<span></span></div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="admin.html" class="btn-admin">Área do Admin</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <h1>Encontre o imóvel dos seus sonhos</h1>
+                <p>As melhores oportunidades de casas e apartamentos em todo o país.</p>
+                
+                <div class="search-container">
+                    <form id="filter-form" class="filter-form">
+                        <div class="filter-group">
+                            <label for="filter-type">Tipo</label>
+                            <select id="filter-type">
+                                <option value="all">Todos</option>
+                                <option value="Casa">Casa</option>
+                                <option value="Apartamento">Apartamento</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="filter-status">Status</label>
+                            <select id="filter-status">
+                                <option value="all">Todos</option>
+                                <option value="Venda">Venda</option>
+                                <option value="Aluguel">Aluguel</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="filter-city">Cidade</label>
+                            <input type="text" id="filter-city" placeholder="Ex: São Paulo">
+                        </div>
+                        <button type="submit" class="btn-search">Filtrar</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <section class="listings container">
+            <h2>Imóveis Disponíveis</h2>
+            <div id="property-grid" class="property-grid">
+                <!-- Imóveis serão inseridos via JS -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal de Detalhes -->
+    <div id="modal-details" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div id="modal-body">
+                <!-- Conteúdo do detalhe via JS -->
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2023 Imobiliária Premium. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

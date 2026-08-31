@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin | Imobiliária Premium</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="navbar">
+        <div class="container nav-container">
+            <div class="logo">Imobiliária<span class="admin-logo">Admin</span></div>
+            <nav id="admin-nav" class="hidden">
+                <ul class="nav-links">
+                    <li><a href="index.html">Ver Site</a></li>
+                    <li><a href="#" id="logout-btn" class="btn-logout">Sair</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Login Section -->
+        <section id="login-section" class="login-container">
+            <div class="card login-card">
+                <h2>Acesso Restrito</h2>
+                <form id="login-form">
+                    <div class="form-group">
+                        <label>Usuário</label>
+                        <input type="text" id="username" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Senha</label>
+                        <input type="password" id="password" required>
+                    </div>
+                    <button type="submit" class="btn-primary">Entrar</button>
+                    <p id="login-error" class="error-msg hidden">Credenciais inválidas!</p>
+                </form>
+            </div>
+        </section>
+
+        <!-- Dashboard Section -->
+        <section id="admin-dashboard" class="hidden">
+            <div class="dashboard-header">
+                <h2>Gerenciamento de Imóveis</h2>
+                <button id="open-modal-new" class="btn-success">Novo Imóvel</button>
+            </div>
+
+            <div class="table-container">
+                <table id="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Título</th>
+                            <th>Tipo</th>
+                            <th>Status</th>
+                            <th>Preço</th>
+                            <th>Cidade</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="admin-table-body">
+                        <!-- Linhas da tabela via JS -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal CRUD -->
+    <div id="modal-crud" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2 id="modal-title">Cadastrar Imóvel</h2>
+            <form id="property-form">
+                <input type="hidden" id="property-id">
+                
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Título</label>
+                        <input type="text" id="prop-title" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Tipo</label>
+                        <select id="prop-type" required>
+                            <option value="Casa">Casa</option>
+                            <option value="Apartamento">Apartamento</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select id="prop-status" required>
+                            <option value="Venda">Venda</option>
+                            <option value="Aluguel">Aluguel</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Preço (R$)</label>
+                        <input type="number" id="prop-price" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Cidade</label>
+                        <input type="text" id="prop-city" required>
+                    </div>
+                    <div class="form-group">
+                        <label>URL da Imagem</label>
+                        <input type="url" id="prop-image" placeholder="https://..." required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Descrição</label>
+                    <textarea id="prop-description" rows="4" required></textarea>
+                </div>
+                <button type="submit" class="btn-primary">Salvar Imóvel</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
