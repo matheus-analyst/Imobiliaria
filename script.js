@@ -1,5 +1,6 @@
 const STORAGE_KEY = 'imobiliaria_properties';
 const AUTH_KEY = 'imobiliaria_auth';
+const IMAGES_KEY = 'imobiliaria_images';
 
 const initialData = [
     {
@@ -9,10 +10,8 @@ const initialData = [
         status: "Venda",
         price: 1500000,
         city: "São Paulo",
-        images: [
-            "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=800&q=80",
-            "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80"
-        ],
+        images: [],
+        imageIds: [],
         description: "Uma casa espetacular com piscina privativa, 4 suítes e acabamento de luxo."
     },
     {
@@ -22,9 +21,8 @@ const initialData = [
         status: "Aluguel",
         price: 4500,
         city: "Rio de Janeiro",
-        images: [
-            "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=800&q=80"
-        ],
+        images: [],
+        imageIds: [],
         description: "Localização privilegiada, próximo a tudo o que você precisa para o seu dia a dia."
     },
     {
@@ -34,9 +32,8 @@ const initialData = [
         status: "Venda",
         price: 850000,
         city: "Gramado",
-        images: [
-            "https://images.unsplash.com/photo-1518780664697-55e3ad937233?auto=format&fit=crop&w=800&q=80"
-        ],
+        images: [],
+        imageIds: [],
         description: "Ideal para quem busca tranquilidade e contato direto com a natureza."
     }
 ];
@@ -51,10 +48,37 @@ const getProperties = () => {
 };
 
 const saveProperties = (properties) => localStorage.setItem(STORAGE_KEY, JSON.stringify(properties));
+
+const getImages = () => {
+    const data = localStorage.getItem(IMAGES_KEY);
+    return data ? JSON.parse(data) : {};
+};
+
+const saveImages = (images) => localStorage.setItem(IMAGES_KEY, JSON.stringify(images));
+
 const checkAuth = () => localStorage.getItem(AUTH_KEY) === 'true';
 const setAuth = (status) => localStorage.setItem(AUTH_KEY, status);
 const formatPrice = (value) => `R$ ${Number(value).toLocaleString('pt-BR')}`;
-const getImagesArray = (prop) => prop.images && prop.images.length ? prop.images : [prop.image].filter(Boolean);
+
+const getPropertyImages = (prop) => {
+    const allImages = getImages();
+    if (prop.imageIds && prop.imageIds.length > 0) {
+        return prop.imageIds.map(id => allImages[id] || '').filter(Boolean);
+    }
+    if (prop.images && prop.images.length > 0) {
+        return prop.images;
+    }
+    return ['https://via.placeholder.com/800x600?text=Sem+Imagem'];
+};
+
+const convertFileToBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = (error) => reject(error);
+    });
+};
 
 const initPublicArea = () => {
     const propertyGrid = document.getElementById('property-grid');
@@ -82,7 +106,7 @@ const initPublicArea = () => {
             return;
         }
         properties.forEach(p => {
-            const images = getImagesArray(p);
+            const images = getPropertyImages(p);
             const card = document.createElement('div');
             card.className = 'card';
             card.innerHTML = `
@@ -104,8 +128,17 @@ const initPublicArea = () => {
     window.showDetails = (id) => {
         const p = getProperties().find(item => item.id === id);
         if (!p) return;
-        const images = getImagesArray(p);
+        const images = getPropertyImages(p);
         const modalBody = document.getElementById('modal-body');
+        const whatsappMessage = `Olá! Vim pelo site e tenho interesse no imóvel:
+
+🏠 *${p.title}*
+💰 *${formatPrice(p.price)}*
+📍 ${p.city} - ${p.type}
+📋 ${p.status}
+
+Gostaria de mais informações!`;
+        
         modalBody.innerHTML = `
             <div class="details-gallery">
                 <img src="${images[0]}" alt="${p.title}" class="main-detail-image">
@@ -121,8 +154,8 @@ const initPublicArea = () => {
                 <p class="card-info">${p.type} | ${p.status} | ${p.city}</p>
                 <hr style="margin: 20px 0; border: none; border-top: 1px solid #e5e7eb;">
                 <p class="modal-desc">${p.description}</p>
-                <a href="https://wa.me/5511934946547?text=${encodeURIComponent('Olá, tenho interesse no imóvel: ' + p.title)}" target="_blank" class="btn-whatsapp">
-                    <i class="fab fa-whatsapp"></i> Entrar em Contato via WhatsApp
+                <a href="https://wa.me/5511934946547?text=${encodeURIComponent(whatsappMessage)}" target="_blank" class="btn-whatsapp">
+                    <i class="fab fa-whatsapp"></i> Tenho Interesse neste Imóvel
                 </a>
             </div>
         `;
@@ -182,7 +215,7 @@ const initAdminArea = () => {
         adminTableBody.innerHTML = '';
         updateStats();
         properties.forEach(p => {
-            const images = getImagesArray(p);
+            const images = getPropertyImages(p);
             const tr = document.createElement('tr');
             tr.innerHTML = `
                 <td><img src="${images[0]}" class="table-thumb" alt="${p.title}"></td>
@@ -220,23 +253,41 @@ const initAdminArea = () => {
         propertyForm.reset(); 
         document.getElementById('property-id').value = ''; 
         document.getElementById('modal-title').innerHTML = '<i class="fas fa-plus-circle"></i> Cadastrar Imóvel'; 
+        document.getElementById('image-preview-container').innerHTML = '';
         crudModal.style.display = 'block'; 
     });
     cancelBtn?.addEventListener('click', () => crudModal.style.display = 'none');
     if (closeModalCrud) closeModalCrud.onclick = () => crudModal.style.display = 'none';
     window.addEventListener('click', (event) => { if (event.target === crudModal) crudModal.style.display = 'none'; });
 
-    propertyForm.addEventListener('submit', (e) => {
+    propertyForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const id = document.getElementById('property-id').value;
         const properties = getProperties();
-        const images = [
-            document.getElementById('prop-image').value.trim(),
-            document.getElementById('prop-image-2').value.trim(),
-            document.getElementById('prop-image-3').value.trim(),
-            document.getElementById('prop-image-4').value.trim(),
-            document.getElementById('prop-image-5').value.trim()
-        ].filter(Boolean).slice(0,5);
+        const allImages = getImages();
+        const imageFiles = [];
+        const imageIds = [];
+
+        for (let i = 1; i <= 5; i++) {
+            const input = document.getElementById(`prop-image-${i}`);
+            if (input && input.files && input.files[0]) {
+                imageFiles.push(input.files[0]);
+            }
+        }
+
+        if (imageFiles.length > 0) {
+            for (const file of imageFiles) {
+                const imageId = 'img_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+                try {
+                    const base64 = await convertFileToBase64(file);
+                    allImages[imageId] = base64;
+                    imageIds.push(imageId);
+                } catch (error) {
+                    console.error('Erro ao converter imagem:', error);
+                }
+            }
+            saveImages(allImages);
+        }
 
         const propData = {
             id: id ? parseInt(id) : Date.now(),
@@ -245,14 +296,20 @@ const initAdminArea = () => {
             status: document.getElementById('prop-status').value,
             price: parseFloat(document.getElementById('prop-price').value),
             city: document.getElementById('prop-city').value,
-            image: images[0] || '',
-            images,
+            image: '',
+            images: [],
+            imageIds: imageIds.length > 0 ? imageIds : (id ? getProperties().find(p => p.id === parseInt(id))?.imageIds || [] : []),
             description: document.getElementById('prop-description').value
         };
 
         if (id) {
             const index = properties.findIndex(p => p.id === parseInt(id));
-            if (index !== -1) properties[index] = propData;
+            if (index !== -1) {
+                if (imageIds.length === 0) {
+                    propData.imageIds = properties[index].imageIds || [];
+                }
+                properties[index] = propData;
+            }
         } else {
             properties.push(propData);
         }
@@ -264,19 +321,22 @@ const initAdminArea = () => {
     window.editProperty = (id) => {
         const p = getProperties().find(item => item.id === id);
         if (!p) return;
-        const images = getImagesArray(p);
+        const images = getPropertyImages(p);
         document.getElementById('property-id').value = p.id;
         document.getElementById('prop-title').value = p.title;
         document.getElementById('prop-type').value = p.type;
         document.getElementById('prop-status').value = p.status;
         document.getElementById('prop-price').value = p.price;
         document.getElementById('prop-city').value = p.city;
-        document.getElementById('prop-image').value = images[0] || '';
-        document.getElementById('prop-image-2').value = images[1] || '';
-        document.getElementById('prop-image-3').value = images[2] || '';
-        document.getElementById('prop-image-4').value = images[3] || '';
-        document.getElementById('prop-image-5').value = images[4] || '';
         document.getElementById('prop-description').value = p.description;
+
+        for (let i = 1; i <= 5; i++) {
+            const input = document.getElementById(`prop-image-${i}`);
+            if (input) {
+                input.value = '';
+            }
+        }
+
         document.getElementById('modal-title').innerHTML = '<i class="fas fa-edit"></i> Editar Imóvel';
         crudModal.style.display = 'block';
     };

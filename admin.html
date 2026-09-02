@@ -142,29 +142,30 @@
 
                 <div class="form-section">
                     <h3><i class="fas fa-images"></i> Fotos (até 5 imagens)</h3>
+                    <p style="color: var(--gray); margin-bottom: 15px; font-size: 0.9rem;">Selecione as imagens do imóvel no seu computador</p>
                     <div class="image-upload-container">
                         <div class="form-group full-width">
-                            <label>URL da Imagem Principal *</label>
-                            <input type="url" id="prop-image" required placeholder="https://exemplo.com/imagem1.jpg">
-                            <small>Cole o link da imagem principal do imóvel</small>
+                            <label><i class="fas fa-camera"></i> Imagem Principal *</label>
+                            <input type="file" id="prop-image-1" accept="image/*" class="image-input">
                         </div>
                         <div class="form-group full-width">
-                            <label>URL da Imagem 2</label>
-                            <input type="url" id="prop-image-2" placeholder="https://exemplo.com/imagem2.jpg">
+                            <label><i class="fas fa-camera"></i> Imagem 2</label>
+                            <input type="file" id="prop-image-2" accept="image/*" class="image-input">
                         </div>
                         <div class="form-group full-width">
-                            <label>URL da Imagem 3</label>
-                            <input type="url" id="prop-image-3" placeholder="https://exemplo.com/imagem3.jpg">
+                            <label><i class="fas fa-camera"></i> Imagem 3</label>
+                            <input type="file" id="prop-image-3" accept="image/*" class="image-input">
                         </div>
                         <div class="form-group full-width">
-                            <label>URL da Imagem 4</label>
-                            <input type="url" id="prop-image-4" placeholder="https://exemplo.com/imagem4.jpg">
+                            <label><i class="fas fa-camera"></i> Imagem 4</label>
+                            <input type="file" id="prop-image-4" accept="image/*" class="image-input">
                         </div>
                         <div class="form-group full-width">
-                            <label>URL da Imagem 5</label>
-                            <input type="url" id="prop-image-5" placeholder="https://exemplo.com/imagem5.jpg">
+                            <label><i class="fas fa-camera"></i> Imagem 5</label>
+                            <input type="file" id="prop-image-5" accept="image/*" class="image-input">
                         </div>
                     </div>
+                    <div id="image-preview-container" class="image-preview-container"></div>
                 </div>
 
                 <div class="form-section">
