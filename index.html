@@ -8,11 +8,12 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <header class="navbar">
         <div class="container nav-container">
-            <div class="logo">Imobiliária<span></span></div>
+            <div class="logo">Imobiliária<span>Premium</span></div>
             <nav>
                 <ul class="nav-links">
                     <li><a href="index.html">Home</a></li>
@@ -50,33 +51,153 @@
                             <label for="filter-city">Cidade</label>
                             <input type="text" id="filter-city" placeholder="Ex: São Paulo">
                         </div>
-                        <button type="submit" class="btn-search">Filtrar</button>
+                        <div class="filter-group">
+                            <label for="filter-price">Preço Máximo (R$)</label>
+                            <input type="number" id="filter-price" placeholder="Ex: 1000000">
+                        </div>
+                        <button type="submit" class="btn-search"><i class="fas fa-search"></i> Filtrar</button>
                     </form>
                 </div>
             </div>
         </section>
 
         <section class="listings container">
-            <h2>Imóveis Disponíveis</h2>
+            <div class="section-header">
+                <h2>Imóveis Disponíveis</h2>
+                <p id="results-count"></p>
+            </div>
             <div id="property-grid" class="property-grid">
-                <!-- Imóveis serão inseridos via JS -->
+            </div>
+        </section>
+
+        <!-- Seção de Contato com Mapa -->
+        <section class="contact-section">
+            <div class="container">
+                <div class="section-title">
+                    <h2>Entre em Contato</h2>
+                    <p>Estamos prontos para te atender</p>
+                </div>
+                
+                <div class="contact-grid">
+                    <div class="contact-info">
+                        <div class="contact-card">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <div>
+                                <h4>Endereço</h4>
+                                <p>Av. Paulista, 1000 - São Paulo, SP</p>
+                            </div>
+                        </div>
+                        <div class="contact-card">
+                            <i class="fab fa-whatsapp"></i>
+                            <div>
+                                <h4>WhatsApp</h4>
+                                <p>(11) 93494-6547</p>
+                            </div>
+                        </div>
+                        <div class="contact-card">
+                            <i class="fas fa-envelope"></i>
+                            <div>
+                                <h4>Email</h4>
+                                <p>contato@imobiliaria.com.br</p>
+                            </div>
+                        </div>
+                        <div class="contact-card">
+                            <i class="fas fa-clock"></i>
+                            <div>
+                                <h4>Horário de Atendimento</h4>
+                                <p>Seg - Sex: 9h às 18h | Sáb: 9h às 13h</p>
+                            </div>
+                        </div>
+                        
+                        <div class="social-contact">
+                            <h4>Siga-nos</h4>
+                            <div class="social-links">
+                                <a href="#"><i class="fab fa-instagram"></i></a>
+                                <a href="#"><i class="fab fa-facebook"></i></a>
+                                <a href="#"><i class="fab fa-linkedin"></i></a>
+                                <a href="#"><i class="fab fa-youtube"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="map-container">
+                        <iframe 
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3656.9489896162626!2d-46.6549581!3d-23.5649847!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ce59c8da0aa315%3A0xd59f9432f2c9576d!2sAv.%20Paulista%2C%20S%C3%A3o%20Paulo%20-%20SP!5e0!3m2!1spt-BR!2sbr!4v1689012345678!5m2!1spt-BR!2sbr" 
+                            width="100%" 
+                            height="450" 
+                            style="border:0; border-radius: 16px;" 
+                            allowfullscreen="" 
+                            loading="lazy" 
+                            referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    </div>
+                </div>
             </div>
         </section>
     </main>
 
-    <!-- Modal de Detalhes -->
     <div id="modal-details" class="modal">
-        <div class="modal-content">
+        <div class="modal-content modal-large">
             <span class="close-modal">&times;</span>
-            <div id="modal-body">
-                <!-- Conteúdo do detalhe via JS -->
-            </div>
+            <div id="modal-body"></div>
         </div>
     </div>
 
+    <a href="https://wa.me/5511934946547?text=Olá, vim pelo site e gostaria de mais informações sobre os imóveis!" 
+       class="whatsapp-float" 
+       target="_blank" 
+       rel="noopener noreferrer">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
     <footer class="footer">
         <div class="container">
-            <p>&copy; 2023 Imobiliária Premium. Todos os direitos reservados.</p>
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Imobiliária Premium</h3>
+                    <p>Seu parceiro ideal na busca pelo lar perfeito. Trabalhamos com as melhores oportunidades do mercado.</p>
+                    <div class="footer-logo">
+                        <i class="fas fa-home"></i>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Links Rápidos</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html"><i class="fas fa-chevron-right"></i> Home</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Imóveis à Venda</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Imóveis para Alugar</a></li>
+                        <li><a href="admin.html"><i class="fas fa-chevron-right"></i> Área do Admin</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contato</h4>
+                    <ul class="footer-contact">
+                        <li><i class="fab fa-whatsapp"></i> (11) 93494-6547</li>
+                        <li><i class="fas fa-envelope"></i> contato@imobiliaria.com.br</li>
+                        <li><i class="fas fa-map-marker-alt"></i> São Paulo, SP</li>
+                        <li><i class="fas fa-clock"></i> Seg - Sex: 9h às 18h</li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Redes Sociais</h4>
+                    <p>Siga-nos nas redes sociais e fique por dentro das novidades.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-btn"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-btn"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="social-btn"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="social-btn"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="footer-bottom-content">
+                    <p>&copy; 2026 Imobiliária Premium. Todos os direitos reservados.</p>
+                    <div class="footer-bottom-links">
+                        <a href="#">Termos de Uso</a>
+                        <a href="#">Política de Privacidade</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </footer>
 

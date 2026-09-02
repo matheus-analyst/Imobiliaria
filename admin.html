@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <header class="navbar">
@@ -15,44 +16,74 @@
             <div class="logo">Imobiliária<span class="admin-logo">Admin</span></div>
             <nav id="admin-nav" class="hidden">
                 <ul class="nav-links">
-                    <li><a href="index.html">Ver Site</a></li>
-                    <li><a href="#" id="logout-btn" class="btn-logout">Sair</a></li>
+                    <li><a href="index.html"><i class="fas fa-home"></i> Ver Site</a></li>
+                    <li><a href="#" id="logout-btn" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
                 </ul>
             </nav>
         </div>
     </header>
 
     <main class="container">
-        <!-- Login Section -->
         <section id="login-section" class="login-container">
             <div class="card login-card">
-                <h2>Acesso Restrito</h2>
+                <div class="login-header">
+                    <i class="fas fa-user-shield"></i>
+                    <h2>Acesso Restrito</h2>
+                    <p>Faça login para gerenciar os imóveis</p>
+                </div>
                 <form id="login-form">
                     <div class="form-group">
-                        <label>Usuário</label>
-                        <input type="text" id="username" required>
+                        <label><i class="fas fa-user"></i> Usuário</label>
+                        <input type="text" id="username" required placeholder="admin">
                     </div>
                     <div class="form-group">
-                        <label>Senha</label>
-                        <input type="password" id="password" required>
+                        <label><i class="fas fa-lock"></i> Senha</label>
+                        <input type="password" id="password" required placeholder="123">
                     </div>
-                    <button type="submit" class="btn-primary">Entrar</button>
-                    <p id="login-error" class="error-msg hidden">Credenciais inválidas!</p>
+                    <button type="submit" class="btn-primary btn-block">Entrar</button>
+                    <p id="login-error" class="error-msg hidden"><i class="fas fa-exclamation-circle"></i> Credenciais inválidas!</p>
                 </form>
             </div>
         </section>
 
-        <!-- Dashboard Section -->
         <section id="admin-dashboard" class="hidden">
             <div class="dashboard-header">
-                <h2>Gerenciamento de Imóveis</h2>
-                <button id="open-modal-new" class="btn-success">Novo Imóvel</button>
+                <div>
+                    <h2><i class="fas fa-building"></i> Gerenciamento de Imóveis</h2>
+                    <p class="dashboard-subtitle">Gerencie todos os imóveis cadastrados</p>
+                </div>
+                <button id="open-modal-new" class="btn-success"><i class="fas fa-plus"></i> Novo Imóvel</button>
+            </div>
+
+            <div class="stats-container">
+                <div class="stat-card">
+                    <i class="fas fa-home"></i>
+                    <div>
+                        <h3 id="total-properties">0</h3>
+                        <p>Total de Imóveis</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-hand-holding-usd"></i>
+                    <div>
+                        <h3 id="total-sale">0</h3>
+                        <p>Para Venda</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-key"></i>
+                    <div>
+                        <h3 id="total-rent">0</h3>
+                        <p>Para Aluguel</p>
+                    </div>
+                </div>
             </div>
 
             <div class="table-container">
                 <table id="admin-table">
                     <thead>
                         <tr>
+                            <th>Imagem</th>
                             <th>Título</th>
                             <th>Tipo</th>
                             <th>Status</th>
@@ -62,58 +93,92 @@
                         </tr>
                     </thead>
                     <tbody id="admin-table-body">
-                        <!-- Linhas da tabela via JS -->
                     </tbody>
                 </table>
             </div>
         </section>
     </main>
 
-    <!-- Modal CRUD -->
     <div id="modal-crud" class="modal">
-        <div class="modal-content">
+        <div class="modal-content modal-large">
             <span class="close-modal">&times;</span>
-            <h2 id="modal-title">Cadastrar Imóvel</h2>
+            <h2 id="modal-title"><i class="fas fa-plus-circle"></i> Cadastrar Imóvel</h2>
             <form id="property-form">
                 <input type="hidden" id="property-id">
                 
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label>Título</label>
-                        <input type="text" id="prop-title" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Tipo</label>
-                        <select id="prop-type" required>
-                            <option value="Casa">Casa</option>
-                            <option value="Apartamento">Apartamento</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Status</label>
-                        <select id="prop-status" required>
-                            <option value="Venda">Venda</option>
-                            <option value="Aluguel">Aluguel</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Preço (R$)</label>
-                        <input type="number" id="prop-price" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Cidade</label>
-                        <input type="text" id="prop-city" required>
-                    </div>
-                    <div class="form-group">
-                        <label>URL da Imagem</label>
-                        <input type="url" id="prop-image" placeholder="https://..." required>
+                <div class="form-section">
+                    <h3><i class="fas fa-info-circle"></i> Informações Básicas</h3>
+                    <div class="form-grid">
+                        <div class="form-group full-width">
+                            <label>Título *</label>
+                            <input type="text" id="prop-title" required placeholder="Ex: Casa Moderna no Centro">
+                        </div>
+                        <div class="form-group">
+                            <label>Tipo *</label>
+                            <select id="prop-type" required>
+                                <option value="Casa">Casa</option>
+                                <option value="Apartamento">Apartamento</option>
+                                <option value="Terreno">Terreno</option>
+                                <option value="Comercial">Comercial</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Status *</label>
+                            <select id="prop-status" required>
+                                <option value="Venda">Venda</option>
+                                <option value="Aluguel">Aluguel</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Preço (R$) *</label>
+                            <input type="number" id="prop-price" required placeholder="Ex: 500000">
+                        </div>
+                        <div class="form-group">
+                            <label>Cidade *</label>
+                            <input type="text" id="prop-city" required placeholder="Ex: São Paulo">
+                        </div>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label>Descrição</label>
-                    <textarea id="prop-description" rows="4" required></textarea>
+
+                <div class="form-section">
+                    <h3><i class="fas fa-images"></i> Fotos (até 5 imagens)</h3>
+                    <div class="image-upload-container">
+                        <div class="form-group full-width">
+                            <label>URL da Imagem Principal *</label>
+                            <input type="url" id="prop-image" required placeholder="https://exemplo.com/imagem1.jpg">
+                            <small>Cole o link da imagem principal do imóvel</small>
+                        </div>
+                        <div class="form-group full-width">
+                            <label>URL da Imagem 2</label>
+                            <input type="url" id="prop-image-2" placeholder="https://exemplo.com/imagem2.jpg">
+                        </div>
+                        <div class="form-group full-width">
+                            <label>URL da Imagem 3</label>
+                            <input type="url" id="prop-image-3" placeholder="https://exemplo.com/imagem3.jpg">
+                        </div>
+                        <div class="form-group full-width">
+                            <label>URL da Imagem 4</label>
+                            <input type="url" id="prop-image-4" placeholder="https://exemplo.com/imagem4.jpg">
+                        </div>
+                        <div class="form-group full-width">
+                            <label>URL da Imagem 5</label>
+                            <input type="url" id="prop-image-5" placeholder="https://exemplo.com/imagem5.jpg">
+                        </div>
+                    </div>
                 </div>
-                <button type="submit" class="btn-primary">Salvar Imóvel</button>
+
+                <div class="form-section">
+                    <h3><i class="fas fa-align-left"></i> Descrição</h3>
+                    <div class="form-group full-width">
+                        <label>Descrição Detalhada *</label>
+                        <textarea id="prop-description" rows="5" required placeholder="Descreva os detalhes do imóvel, características, comodidades, localização, etc."></textarea>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" id="cancel-btn">Cancelar</button>
+                    <button type="submit" class="btn-primary"><i class="fas fa-save"></i> Salvar Imóvel</button>
+                </div>
             </form>
         </div>
     </div>
